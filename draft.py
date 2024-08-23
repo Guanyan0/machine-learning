@@ -1,24 +1,35 @@
-import numpy as np
-import tensorflow as tf
+# 导入必要的库
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, classification_report
 
-X = np.array([[0., 1, 2], [3, 4, 5], [6, 7, 8]], dtype=np.float32)
-y = np.array([2, 4, 6], dtype=np.float32)
-W = tf.Variable(np.array([[1], [1], [1]], dtype=np.float32))
-b = tf.Variable(0.0, dtype=np.float32)
-iterations = 100
-alpha_ = .01
+# 加载数据集
+iris = load_iris()
+X = iris.data  # 特征
+y = iris.target  # 标签
 
-# fwb=tf.linalg.matmul(X,W)+b
-# cost_f=(fwb-y.reshape(-1,1))**2/2/len(y)
-# print(fwb)
-# print(cost_f)
-for iter in range(iterations):
-    with tf.GradientTape() as tape:
-        fwb = tf.linalg.matmul(X, W) + b
-        cost_f = tf.reduce_mean((fwb - y.reshape(-1, 1)) ** 2) / 2  # 使用 reduce_mean 计算平均值
-    dj_dw, dj_db = tape.gradient(cost_f, [W, b])
-    W.assign_sub(alpha_ * dj_dw)  # 使用 assign_sub 减少更新量
-    b.assign_sub(alpha_ * dj_db)
-    print(iter, '---', cost_f.numpy())
+# 将数据集分为训练集和测试集
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
-print(W.value(),'\n',b.value())
+# 数据标准化
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# 初始化KNN分类器
+knn = KNeighborsClassifier(n_neighbors=3)
+
+# 训练模型
+knn.fit(X_train, y_train)
+
+# 进行预测
+y_pred = knn.predict(X_test)
+
+# 计算准确率
+accuracy = accuracy_score(y_test, y_pred)
+print(f'Accuracy: {accuracy:.2f}')
+
+# 打印分类报告
+print(classification_report(y_test, y_pred, target_names=iris.target_names))
