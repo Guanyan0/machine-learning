@@ -57,5 +57,5 @@ test_w = np.array([0.2, 0.2])
 test_b = -24.
 cost = compute_cost(X_train, y_train, test_w, test_b)
 
-print('Cost at test w,b: {:.3f}'.format(cost))
+print('Cost at house_price_prediction w,b: {:.3f}'.format(cost))
 
