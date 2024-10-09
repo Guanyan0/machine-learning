@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-plt.style.use('./deeplearning.mplstyle')
+plt.style.use('deeplearning.mplstyle')
 import tensorflow as tf
 from tensorflow.keras.activations import sigmoid
 from matplotlib import cm
