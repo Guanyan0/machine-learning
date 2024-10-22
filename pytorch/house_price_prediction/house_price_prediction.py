@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import torch
 import torch.nn as nn
@@ -67,6 +68,8 @@ for epoch in range(num_epochs):
     scheduler.step()
     print('l_train:', l_train, 'l_test:', l_test)
 
+net[0].weight.grad = torch.zeros_like(net[0].weight.grad)
+print(net[0].weight.grad)
 # 绘制损失曲线
 plt.plot(l_train_history, label='Training loss')
 plt.plot(l_test_history, label='Test loss')
